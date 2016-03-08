@@ -1,0 +1,61 @@
+<template name='TeamSearch'>
+<header> Inferknow: by Vulcan Robotics #8375 </header>
+{{>Header}}
+
+This is a listing of the best robots in the world. In order to see the highest scoring matches in the world, click the "Results" tab above. <br>
+Instructions:
+<ul>
+  <li> Click on the headings to sort every team by the OPR of that stat. For example, if you click on "High Goal", you would obtain a list of the robots that scored the most cubes in the high goal and how much they scored.</li>
+  <li>Searching and filtering capabilities are soon to come.</li>
+</ul>
+These are all OPR ratings. OPR, which stands for Offensive Power Rating, is a metric that's designed to isolate an individual robot's contribution to its alliance. For example, team 8221 with its Total Score OPR rating of 332.69 should theoretically score 332 points for its alliance every match.
+<br><br>
+In addition to overall OPR, we have also calculated OPR for individual tasks. For example, team #7357 has a Hang Percentage OPR of .98. This means that on average, it increases its alliance's number of hangs by .98. In practical terms, you can often think of this of a robot having a 98% chance of hanging. 
+<br><br>
+Similarly, team 4997 has a high goal OPR of 9.93, which means that on average, it scores about 9.93 cubes in the high goal per match.
+<br><br>
+Note that due to the low amount of matches played in FTC, all of these numbers are subject to a large amount of noise. These numbers (especially the numbers given for hanging), are merely a rough guideline to a robot's capabilities.  
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th colspan='2'></th>
+        <th colspan='6'>
+          OPR
+        </th>
+      </tr>
+      <tr>
+        <th id='rank'>
+          Rank
+        </th>
+        <th id="team_number" >
+          Team #
+        </th>
+        <th id='total_score' class='sortable'>
+          Total Score
+        </th>
+        <th id='hang' class='sortable'>
+          Hang Percentage
+        </th>
+        <th id='high_goal' class='sortable'>
+          High Goal
+        </th>
+        <th id='mid_goal' class='sortable'>
+          Mid Goal
+        </th>
+        <th id='low_goal' class='sortable'>
+          Low Goal
+        </th>
+        <th id='zipline' class='sortable'>
+          Ziplines
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each teams}}
+          {{>TeamInfo}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+  
+

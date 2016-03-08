@@ -1,0 +1,137 @@
+<template name="Leaderboard">
+  <title> Inferknow </title>
+  <header> Inferknow: by Vulcan Robotics #8375 </header>
+  {{>Header}}
+
+  This is a listing of the matches with the highest scores throughout the entire world. To see the best teams in the world, click on the "Teams" tab above.<br>
+  Instructions:
+  <ul>
+    <li>Type team numbers into Search to search for specific teams' matches (as well as stats like OPR). Alternately, click on a team's number in the table to search for more matches with that team in it</li>
+    <li>In addition to filtering by teams, you can also choose to only look at matches from a specific competition or region by clicking on those respective boxes in the table.</li>
+    <li> Click on Reset Filters to get rid of all filters and start anew. </li>
+    <li> To see a more detailed breakdown of how the teams scored their points, click on the plus sign below the date. </li>
+  </ul>
+  If you have any data we're missing, suggestions for features to add, or bug reports, please email me at horacehe2007 (at)yahoo.com
+  <button id='reset_filters'>Reset Filters</button>
+  <div id='cur_filter'> </div>
+  Search: <input type="number" id='search'>
+  <form id='region_selector'>
+  Select a Region: 
+  <input type="radio" name="region" value="all" checked> All
+    <input type="radio" name="region" value="west"> West
+    <input type="radio" name="region" value="east"> East
+     <input type="radio" name="region" value="north"> North 
+     <input type="radio" name="region" value="south"> South 
+     <input type="radio" name="region" value="none"> Other
+  </form>
+  {{#if isTeam}}
+    <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th id="team_number" >
+          Team #
+        </th>
+        <th id='total_score' class='sortable'>
+          Total Score
+        </th>
+        <th id='hang' class='sortable'>
+          Hang Percentage
+        </th>
+        <th id='high_goal' class='sortable'>
+          High Goal
+        </th>
+        <th id='mid_goal' class='sortable'>
+          Mid Goal
+        </th>
+        <th id='low_goal' class='sortable'>
+          Low Goal
+        </th>
+        <th id='zipline' class='sortable'>
+          Ziplines
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{teamNum}}</td>
+        <td>{{opr 'total_score' teamNum}}</td>
+        <td>{{opr 'hang' teamNum}}</td>
+        <td>{{opr 'high_goal' teamNum}}</td>
+        <td>{{opr 'mid_goal' teamNum}}</td>
+        <td>{{opr 'low_goal' teamNum}}</td>
+        <td>{{opr 'zipline' teamNum}} </td>
+      </tr>
+    </tbody>
+  </table>
+  {{/if}}
+    {{> pagesNav}}
+    {{> pages}}
+</template>
+
+<template name='pageResults'>
+Results per page: <a href='#' class='perPage' style='color: black'>10</a> | <a href='#' class='perPage'>25</a> | <a href='#' class='perPage'>50</a>
+ <table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th id='date'>
+        Date
+      </th>
+      <th class='red_team' id='red_1'>
+        Red 1
+      </th>
+      <th class='red_team' id='red_2'>
+        Red 2
+      </th>
+      <th class='red_team' id='red_3'>
+        Red 3
+      </th>
+      <th class='blue_team' id='blue_1'>
+        Blue 1
+      </th>
+      <th class='blue_team' id='blue_2'>
+        Blue 2
+      </th>
+      <th class='blue_team' id='blue_3'>
+        Blue 3
+      </th>
+      <th class='red_team' id='red_auto_score' style='background-color: #fdd' >
+        Auto 
+      </th>
+      <th class='red_team' id='red_tele_score' style='background-color: #fdd'>
+        Tele 
+      </th>
+      <th class='red_team' id='red_total_score' style='background-color: #fdd' >
+        Total
+      </th>
+      <th class='blue_team' id='blue_auto_score' style='background-color: #ddf' >
+        Auto
+      </th>
+      <th class='blue_team' id='blue_tele_score' style='background-color: #ddf'> 
+        Tele
+      </th>
+      <th class='blue_team ' id='blue_total_score' style='background-color: #ddf'> 
+        Total
+      </th>
+      <th id='event_name'>
+        Event
+      </th>
+      <th id='region'>
+        Region
+      </th>
+      <th id='match_number'>
+        Match #
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  {{#if ready pagesData}}
+  {{else}}
+    {{> _pagesLoading}}
+  {{/if}}
+  {{#each items}}
+    {{> item}}
+  {{/each}}
+  </tbody>
+  </table>
+</template>
+

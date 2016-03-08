@@ -1,0 +1,82 @@
+<template name="Match">
+  <tr class='header'>
+    <td>{{date}} <i class="fa fa-plus-circle"></i></td>
+    {{{teamNumber 'red' red_1}}}
+    {{{teamNumber 'red' red_2}}}
+    {{{teamNumber 'red' red_3}}}
+    {{{teamNumber 'blue' blue_1}}}
+    {{{teamNumber 'blue' blue_2}}}
+    {{{teamNumber 'blue' blue_3}}}
+    {{{scores 'red' red_auto_score}}}
+    {{{scores 'red' red_tele_score}}}
+    {{{scores 'red' red_total_score}}}
+    {{{scores 'blue' blue_auto_score}}}
+    {{{scores 'blue' blue_tele_score}}}
+    {{{scores 'blue' blue_total_score}}}
+
+    <td class='filterable'><a href='#'>{{event_name}}</a></td>
+    <td class='filterable'><a href='#'>{{region}}</a></td>
+    <!-- <td class='filterable'>{{event_type}}</td> -->
+    <!-- <td class='filterable'>{{division}}</td> -->
+    <!-- <td class='filterable'>{{match_type}}</td> -->
+    <td class='filterable'>{{match_number}}</td>
+  </tr>
+  <tr>
+    <td colspan='15'>
+      <table class='table table-bordered table-striped'>
+      <tr>
+        <th colspan='4'> Autonomous</th>
+        <th colspan='10'> Teleop</th>
+      </tr>
+      <tr>
+        <th> Place 1 </th>
+        <th> Place 2</th>
+        <th> Beacon </th>
+        <th> Climber </th>
+        <th> Place 1</th>
+        <th> Place 2</th>
+        <th> Floor</th>
+        <th> High </th>
+        <th> Low</th>
+        <th> Mid</th>
+        <th> Climber</th>
+        <th> Zipline </th>
+        <th> All Clear</th>
+        <th> Hang </th>
+      </tr>
+      <tr class='red_team'>
+        <td>{{red_auto_place_1}}</td>
+        <td>{{red_auto_place_2}}</td>
+        <td>{{red_auto_rescue}}</td>
+        <td>{{red_auto_climber}}</td>
+        <td>{{red_tele_place_1}}</td>
+        <td>{{red_tele_place_2}}</td>
+        <td>{{red_tele_floor}}</td>
+        <td>{{red_tele_high}}</td>
+        <td>{{red_tele_low}}</td>
+        <td>{{red_tele_mid}}</td>
+        <td>{{red_tele_climber}}</td>
+        <td>{{red_tele_zip}}</td>
+        <td>{{red_end_allclear}}</td>
+        <td>{{red_end_hang}}</td> 
+      </tr>
+      <tr class='blue_team'>
+        <td>{{blue_auto_place_1}}</td>
+        <td>{{blue_auto_place_2}}</td>
+        <td>{{blue_auto_rescue}}</td>
+        <td>{{blue_auto_climber}}</td>
+        <td>{{blue_tele_place_1}}</td>
+        <td>{{blue_tele_place_2}}</td>
+        <td>{{blue_tele_floor}}</td>
+        <td>{{blue_tele_high}}</td>
+        <td>{{blue_tele_low}}</td>
+        <td>{{blue_tele_mid}}</td>
+        <td>{{blue_tele_climber}}</td>
+        <td>{{blue_tele_zip}}</td>
+        <td>{{blue_end_allclear}}</td>
+        <td>{{blue_end_hang}}</td> 
+      </tr>
+      </table>
+    </td>
+  </tr>
+  </template>

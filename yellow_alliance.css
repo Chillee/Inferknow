@@ -1,0 +1,13 @@
+/* CSS declarations go here */
+.blue_team{
+    background-color: #eef
+}
+.red_team {
+    background-color: #fee
+}
+/*.blue_team.won{
+    background-color: #9999ff
+}
+.red_team.won{
+    background-color: #ff9999
+}*/
