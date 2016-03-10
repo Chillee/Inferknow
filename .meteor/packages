@@ -31,9 +31,9 @@ fastclick
 raix:handlebar-helpers
 aldeed:collection2
 aldeed:autoform
-accounts-ui
-accounts-password
-accounts-base
+#accounts-ui
+#accounts-password
+#accounts-base
 matb33:bootstrap-glyphicons
 zimme:active-route
 gwendall:auth-client-callbacks

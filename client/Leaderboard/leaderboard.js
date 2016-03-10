@@ -14,15 +14,23 @@ Template.Leaderboard.helpers({
             }
         });
         return Session.get('team_obj_'+field);
-        // console.log(Math.max(...Teams.findOne(team).OPR[field]));
-        // return Math.max(...Teams.findOne(team).OPR[field]).toFixed(2);
-
+    },
+    ranking: function(field, team_number){
+        Meteor.call('getRanking', team_number, field, function(err, result){
+            if (result){
+                console.log(result);
+                Session.set('team_ranking', result);
+            }
+        });
+        return Session.get('team_ranking');
     }
 
 });
 
 Template.Leaderboard.events({
-
+    'change .onoffswitch': function(event){
+        // if ($(event.target))
+    },
     'click .sortable_heading': function(event){
         var sort_order = {};
         sort_order[$(event.target).closest('th').attr('id')] = -1;
@@ -53,7 +61,6 @@ Template.Leaderboard.events({
             filters: filter_object
         });
         Session.set('filter_object', filter_object);
-        
     },
     'click #reset_filters': function(){
         Pages.set({

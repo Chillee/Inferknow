@@ -1,7 +1,4 @@
 accounts-base@1.2.2
-accounts-password@1.1.4
-accounts-ui@1.1.6
-accounts-ui-unstyled@1.1.8
 aldeed:autoform@5.8.1
 aldeed:collection2@2.9.0
 aldeed:collection2-core@1.1.0
@@ -116,7 +113,6 @@ mongo-livedata@1.0.9
 msavin:jetsetter@1.5.2
 msavin:mongol@1.6.2
 netanelgilad:excel@0.2.6
-npm-bcrypt@0.7.8_2
 npm-mongo@1.4.39_1
 observe-sequence@1.0.7
 ordered-dict@1.0.4
@@ -132,11 +128,9 @@ retry@1.0.4
 routepolicy@1.0.6
 service-configuration@1.0.5
 session@1.1.1
-sha@1.0.4
 spacebars@1.0.7
 spacebars-compiler@1.0.7
 spiderable@1.0.9
-srp@1.0.4
 standard-minifiers@1.0.2
 stef:import-export-excel@0.0.3
 stolinski:stylus-multi@1.4.3

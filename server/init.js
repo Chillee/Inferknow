@@ -70,7 +70,10 @@ var teleScore = function(team, obj){
     };
 
 var totalScore = function(team, obj){
-    return teleScore(team ,obj)+autoScore(team, obj);
+    return teleScore(team,obj)+autoScore(team, obj);
+}
+var totalScoreWithPenalties = function(team, obj){
+    return teleScore(team,obj)+autoScore(team, obj) + parseInt(obj[team+'_minor_award'])*10 + parseInt(obj[team+'_major_award'])*50;
 }
 
 var alreadyParsed = false;
@@ -145,9 +148,19 @@ var completeProcess = function(results){
               res['red_auto_score'] = autoScore('red', res);
               res['blue_total_score'] = totalScore('blue', res);
               res['red_total_score'] = totalScore('red', res);
+              res['blue_total_score_with_penalties'] = totalScoreWithPenalties('blue', res);
+              res['red_total_score_with_penalties'] = totalScoreWithPenalties('red', res);
               res['max_score'] = Math.max(res.blue_total_score, res.red_total_score);
-
-  
+              res['max_score_with_penalties'] = Math.max(res.blue_total_score_with_penalties, res.red_total_score_with_penalties);
+              if (res['date']=='' && res['red_1']==undefined){
+                continue;
+              }
+              var temp = res['date'].split('/');
+              // console.log(res);
+              if (temp[0].length == 1) temp[0] = '0'+temp[0];
+              if (temp[1].length == 1) temp[1] = '0'+temp[1];
+              temp[2] = temp[2].substr(2,4);
+              res['date'] = temp.join('/');
               // console.log(res);
               // delete cur['Event Name'];
               // console.log(cur['Event_Name']);
@@ -271,8 +284,9 @@ Meteor.startup(function () {
     // console.log(alreadyParsed);
     // var file = Assets.getText("results.csv");
     // console.log(math.sqrt(-4));
-    Results._ensureIndex({red_total_score: -1});
-    Results._ensureIndex({event_name: 1});
+    // Results._ensureIndex({red_total_score: -1});
+    // Results._ensureIndex({event_name: 1});
+    Results._ensureIndex({max_score: -1});
     Teams._ensureIndex({team_number: 1});
     Teams._ensureIndex({'OPR.total_score': 1});
     console.log("start");
@@ -299,16 +313,29 @@ Meteor.startup(function () {
     })
 
     var match_arr = Results.find({}, {fields: {event_name: 1, date: 1}}).fetch();
-    var temp_match_arr = [];
-    temp_match_arr.sort(function(a, b){
-        var aa = a.date.split('/').reverse().join(),
-            bb = b.datesplit('/').reverse().join();
+
+    match_arr.sort(function(a, b){
+        // console.log(a);
+        var aa = a.date.split('/');
+        // console.log(aa);
+        aa = [].concat(aa[2]+aa[0]+aa[1]).join();
+        bb = b.date.split('/');
+        bb = [].concat(bb[2]+bb[0]+bb[1]).join();
         return aa < bb ? -1 : (aa > bb ? 1 : 0);
     });
     for (var i in match_arr){
-        temp_match_arr.push(match_arr[i].event_name);
+        console.log(match_arr[i].date);
+    }
+
+    var temp_match_arr = [];
+    for (var i in match_arr){
+        temp_match_arr.unshift(match_arr[i].event_name);
     }
     var match_list = new Set(temp_match_arr);
+    // for (var i=0; i<match_list.values().length; i++){
+    //     console.log(match_list[i])
+    // }
+    // console.log(match_arr);
 
     // console.log(match_list);
     for (var i=0; i<Array.from(match_list).length; i++){
@@ -321,6 +348,9 @@ Meteor.startup(function () {
         OPR(match_array, 'red_tele_low', 'blue_tele_low', 'low_goal');
         OPR(match_array, 'red_tele_zip', 'blue_tele_zip', 'zipline');
     }
+    // for (var i in all_team_list){
+    //     var ct = Teams.find()
+    // }
 
 
 

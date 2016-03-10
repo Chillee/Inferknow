@@ -3,6 +3,8 @@
   <header> Inferknow: by Vulcan Robotics #8375 </header>
   {{>Header}}
 
+
+
   This is a listing of the matches with the highest scores throughout the entire world. To see the best teams in the world, click on the "Teams" tab above.<br>
   Instructions:
   <ul>
@@ -11,7 +13,7 @@
     <li> Click on Reset Filters to get rid of all filters and start anew. </li>
     <li> To see a more detailed breakdown of how the teams scored their points, click on the plus sign below the date. </li>
   </ul>
-  If you have any data we're missing, suggestions for features to add, or bug reports, please email me at horacehe2007 (at)yahoo.com
+  If you have any data we're missing, suggestions for features to add, or bug reports, please email me at horacehe2007 (at)yahoo.com. <br>
   <button id='reset_filters'>Reset Filters</button>
   <div id='cur_filter'> </div>
   Search: <input type="number" id='search'>
@@ -27,6 +29,11 @@
   {{#if isTeam}}
     <table class="table table-bordered table-striped">
     <thead>
+      <tr>
+        <th colspan='3'></th>
+        <th colspan = '3'>Objects Scored</th>
+        <th colspan = '1'>Ziplines Triggered </th>
+      </tr>
       <tr>
         <th id="team_number" >
           Team #
@@ -54,6 +61,7 @@
     <tbody>
       <tr>
         <td>{{teamNum}}</td>
+        <!-- <td>{{ranking 'total_score' teamNum}} </td> -->
         <td>{{opr 'total_score' teamNum}}</td>
         <td>{{opr 'hang' teamNum}}</td>
         <td>{{opr 'high_goal' teamNum}}</td>
@@ -64,12 +72,19 @@
     </tbody>
   </table>
   {{/if}}
+  
+
     {{> pagesNav}}
     {{> pages}}
 </template>
 
 <template name='pageResults'>
 Results per page: <a href='#' class='perPage' style='color: black'>10</a> | <a href='#' class='perPage'>25</a> | <a href='#' class='perPage'>50</a>
+ <div class="switch" style="float: right">
+  <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">Include Penalties
+  <label for="cmn-toggle-4"></label>
+  </div>
+  
  <table class="table table-bordered table-striped">
   <thead>
     <tr>

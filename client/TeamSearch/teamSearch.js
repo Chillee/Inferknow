@@ -2,7 +2,7 @@ Template.TeamSearch.helpers({
     teams: function(){
         var sort_obj = {};
         sort_obj['OPR.'+Session.get('sort_metric')+'.0'] = -1
-        return Teams.find({}, {sort: sort_obj, limit: 50});
+        return Teams.find({}, {limit: 100, sort: sort_obj});
     },
     teamNum: function(){
         // console.log(this);
