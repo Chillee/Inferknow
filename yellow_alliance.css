@@ -1,9 +1,12 @@
 /* CSS declarations go here */
 .blue_team{
-    background-color: #eef
+    background-color: #eef;
 }
 .red_team {
-    background-color: #fee
+    background-color: #fee;
+}
+.sortable {
+  cursor: pointer;
 }
 /*.blue_team.won{
     background-color: #9999ff

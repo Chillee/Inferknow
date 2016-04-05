@@ -2,8 +2,15 @@
 <tr>
   <td>{{rank}}</td>
   <td>{{team_number}}</td>
+  {{#if isWorlds}}
+    <td> {{team_name}}</td>
+  {{/if}}
+  <td>{{region}}</td>
   <td>{{opr 'total_score' }}</td>
-  <td>{{opr 'hang'}}</td>
+  <td>{{opr 'auto'}}</td>
+  <td>{{opr 'hang'}}%</td>
+  <td>{{opr 'all_clear'}}%</td>
+  <td>{{opr 'cubes_scored'}}</td>
   <td>{{opr 'high_goal'}}</td>
   <td>{{opr 'mid_goal'}}</td>
   <td>{{opr 'low_goal'}}</td>

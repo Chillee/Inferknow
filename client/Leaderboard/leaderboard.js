@@ -9,7 +9,15 @@ Template.Leaderboard.helpers({
         Meteor.call('getTeam', team_number, function(err, result){
             if (result){
                 console.log(result);
-                Session.set('team_obj_'+field, result.OPR[field][0].toFixed(2));
+                var res = result.OPR[field+'_max'];
+                if (res > 1 && (field=='hang' || field=='all_clear')){
+                    res = 1;
+                }
+                console.log(field);
+                if (field=='hang' || field=='all_clear'){
+                    res *= 100;
+                } 
+                Session.set('team_obj_'+field, res.toFixed(2));
                 // console.log(res);
             }
         });
@@ -31,7 +39,7 @@ Template.Leaderboard.events({
     'change .onoffswitch': function(event){
         // if ($(event.target))
     },
-    'click .sortable_heading': function(event){
+    'click .sortable_heading a': function(event){
         var sort_order = {};
         sort_order[$(event.target).closest('th').attr('id')] = -1;
         console.log(sort_order);

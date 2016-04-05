@@ -142,6 +142,12 @@ var completeProcess = function(results){
                     res[prop] = res[prop].trim();
                 }
               }
+              var west = ['California', 'Washington', 'Montana', 'Nevada', 'Wyoming', 'Alaska', 'Utah', 'Idaho', 'Arizona', 'Colorado', 'Oregon', 'New Mexico'];
+              var supers = ['West', 'North', 'South', 'East'];
+              if (west.indexOf(res['region'])==-1 && supers.indexOf(res['region'])==-1){
+                continue;
+              }
+
               res['blue_tele_score'] = teleScore('blue', res);
               res['red_tele_score'] = teleScore('red', res);
               res['blue_auto_score'] = autoScore('blue', res);
@@ -152,6 +158,9 @@ var completeProcess = function(results){
               res['red_total_score_with_penalties'] = totalScoreWithPenalties('red', res);
               res['max_score'] = Math.max(res.blue_total_score, res.red_total_score);
               res['max_score_with_penalties'] = Math.max(res.blue_total_score_with_penalties, res.red_total_score_with_penalties);
+              res['red_cubes_scored'] = parseInt(res['red_tele_high']) + parseInt(res['red_tele_mid']) + parseInt(res['red_tele_low']);
+              res['blue_cubes_scored'] = parseInt(res['blue_tele_high']) + parseInt(res['blue_tele_mid']) + parseInt(res['blue_tele_low']);
+
               if (res['date']=='' && res['red_1']==undefined){
                 continue;
               }
@@ -172,8 +181,8 @@ var completeProcess = function(results){
           console.log("finished");
         }
 
-var OPR = function(matches, red_metric, blue_metric, stored_metric){
-    var opr_arr = matches;
+var OPR = function(match, red_metric, blue_metric, stored_metric){
+    var opr_arr = Results.find({event_name: match}).fetch();
     // console.log(opr_arr);   
     var team_list = new Map();
     var team_pos = {};
@@ -189,45 +198,27 @@ var OPR = function(matches, red_metric, blue_metric, stored_metric){
         var blue_total_score = parseInt(opr_arr[i][blue_metric]);
         // var red_total_score = parseInt(opr_arr[i].red_end_hang);
         // var blue_total_score = parseInt(opr_arr[i].blue_end_hang);
-
-        if (red_3 == 0){
+        if (red_3 != 0 || blue_3!=0){
+            continue;
+        }
 
         if (team_list.has(red_1)!== true) {team_list.set(red_1, [[],0]); team_pos[red_1] = cnt; cnt++};
         if (team_list.has(red_2)!== true) {team_list.set(red_2, [[],0]); team_pos[red_2] = cnt; cnt++};
         if (team_list.has(blue_1)!== true) {team_list.set(blue_1, [[],0]); team_pos[blue_1] = cnt; cnt++};
         if (team_list.has(blue_2)!== true) {team_list.set(blue_2, [[],0]); team_pos[blue_2] = cnt; cnt++};
+
         team_list.get(red_1)[0].push(red_1, red_2);
         team_list.get(red_2)[0].push(red_1, red_2);
         team_list.get(blue_1)[0].push(blue_1, blue_2);
         team_list.get(blue_2)[0].push(blue_1, blue_2);
+        // }
 
         team_list.get(red_1)[1]+= red_total_score;
         team_list.get(red_2)[1]+= red_total_score;
-        // console.log(red_1, team_list.get(red_1)[1], red_total_score);
+            // console.log(red_1, team_list.get(red_1)[1], red_total_score);
+
         team_list.get(blue_1)[1]+= blue_total_score;
         team_list.get(blue_2)[1]+= blue_total_score;
-    } else { continue;}
-        if (red_3!=0){
-            if (team_list.has(red_3)!== true) {team_list[red_3] = [[],0]; team_pos[red_3] = cnt; cnt++};
-            team_list.get(red_1)[0].push(red_3);
-            team_list.get(red_2)[0].push(red_3);
-            team_list.get(blue_1)[0].push(red_3);
-            team_list.get(blue_2)[0].push(red_3);
-            team_list.get(red_3)[0].push(red_1, red_2, red_3, blue_1, blue_2, blue_3);
-            team_list.get(red_3)[1] += red_total_score;
-        }
-        if (blue_3!=0){
-            if (team_list.has(blue_3) !== true) {team_list.set(blue_3, [[],0]); team_pos[blue_3] = cnt; cnt++};
-            team_list.get(red_1)[0].push(blue_3);
-            team_list.get(red_2)[0].push(blue_3);
-            team_list.get(blue_1)[0].push(blue_3);
-            team_list.get(blue_2)[0].push(blue_3);
-            team_list.get(blue_3)[0].push(red_1, red_2, red_3, blue_1, blue_2, blue_3);
-            team_list.get(blue_3)[1] += blue_total_score;
-        }
-        // if (team_list.has('8375')){
-        //     console.log(team_list.get('8375'));
-        // }
     };
    
     // console.log(team_list.get('8375'));
@@ -254,6 +245,9 @@ var OPR = function(matches, red_metric, blue_metric, stored_metric){
     if (opr_matrix == undefined || opr_matrix[0] == undefined || opr_matrix.length != opr_matrix[0].length){
         return;
     }
+    if (opr_arr[0].event_name =='Canada Championship'){
+        console.log(opr_matrix, solve_vector);
+    }
     var x = math.lusolve(opr_matrix, solve_vector);
     var results = [];
     for (var idx in team_pos){
@@ -263,6 +257,23 @@ var OPR = function(matches, red_metric, blue_metric, stored_metric){
     }
     // results = results.sort();
     // console.log(results[1]);
+        function mode(arr){
+        return arr.sort((a,b) =>
+              arr.filter(v => v===a).length
+            - arr.filter(v => v===b).length
+        ).pop();
+    } 
+    // team_list.forEach(function(value, key){
+    //     // console.log(value)
+    //     var store = {};
+    //     store['OPR.'+stored_metric] = value[1]/(value[0].length/2);
+    //     Teams.update(
+    //         {team_number: mode(value[0])}, 
+    //         {"$push": store}
+    //     );
+
+    //    // solve_vector.push(value[1]);
+    // });
     for (var i in results){
         var store = {};
         store['OPR.'+stored_metric] = results[i][0][0];
@@ -309,7 +320,17 @@ Meteor.startup(function () {
     var all_team_list = new Set(temp_team_arr);
     all_team_list.forEach(function(obj){
         // console.log(obj);
-        Teams.insert({team_number: obj, OPR: {total_score: []}});
+        var team_region = Results.findOne({'region': 'East', '$or': [{red_1: obj},{red_2: obj}]});
+        if (!team_region) team_region = Results.findOne({'region': 'North', '$or': [{red_1: obj},{red_2: obj}]});
+        if (!team_region) team_region = Results.findOne({'region': 'South', '$or': [{red_1: obj},{red_2: obj}]});
+        if (!team_region) team_region = Results.findOne({'$or': [{red_1: obj},{red_2: obj}]});
+        var west = ['California', 'Washington', 'Montana', 'Nevada', 'Wyoming', 'Alaska', 'Utah', 'Idaho', 'Arizona', 'Colorado', 'Oregon', 'New Mexico'];
+        var supers = ['West', 'North', 'South', 'East'];
+        if (west.indexOf(team_region.region)==-1 && supers.indexOf(team_region.region)==-1){
+            return;
+        }
+        console.log(team_region.region);
+        Teams.insert({team_number: obj, OPR: {total_score: []}, region: team_region.region});
     })
 
     var match_arr = Results.find({}, {fields: {event_name: 1, date: 1}}).fetch();
@@ -340,19 +361,35 @@ Meteor.startup(function () {
     // console.log(match_list);
     for (var i=0; i<Array.from(match_list).length; i++){
         console.log(Array.from(match_list)[i]);
-        var match_array =  Results.find({event_name: Array.from(match_list)[i]}).fetch();
+        var match_array =  Array.from(match_list)[i];
         OPR(match_array, 'red_total_score', 'blue_total_score', 'total_score');
         OPR(match_array, 'red_end_hang', 'blue_end_hang', 'hang');
         OPR(match_array, 'red_tele_high', 'blue_tele_high', 'high_goal');
         OPR(match_array, 'red_tele_mid', 'blue_tele_mid', 'mid_goal');
         OPR(match_array, 'red_tele_low', 'blue_tele_low', 'low_goal');
         OPR(match_array, 'red_tele_zip', 'blue_tele_zip', 'zipline');
+        OPR(match_array, 'red_auto_score', 'blue_auto_score', 'auto');
+        OPR(match_array, 'red_end_allclear', 'blue_end_allclear', 'all_clear');
+        OPR(match_array, 'red_cubes_scored', 'blue_cubes_scored', 'cubes_scored');
+        // hangOPR(match_array);
     }
-    // for (var i in all_team_list){
-    //     var ct = Teams.find()
-    // }
+    all_team_list.forEach(function(obj){
+        // console.log(obj);
+        var team = Teams.findOne({team_number: obj});
+        var OPR = team.OPR;
+        var OPR_with_max = {};
+        var max_opr = Math.max.apply(Math, OPR.total_score);
+        var idx_max = OPR.total_score.indexOf(max_opr);
 
-
-
+        for (var i in OPR){
+            if (team.region == 'West' || team.region == 'North' || team.region == 'East' || team.region == 'South'){
+                // console.log(team.team_number);
+                OPR_with_max['OPR.'+i+'_max'] = OPR[i][0];
+            } else{
+                OPR_with_max['OPR.'+i+'_max'] = OPR[i][idx_max];
+            }
+        }
+        Teams.update({team_number: obj}, {'$set': OPR_with_max});
+    });
 });
 

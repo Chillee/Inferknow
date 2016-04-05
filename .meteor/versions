@@ -37,7 +37,6 @@ cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.1.0
 coffeescript@1.0.11
-datariot:ganalytics@0.2.1
 dburles:mongo-collection-instances@0.3.4
 ddp@1.2.2
 ddp-client@1.2.1
@@ -115,6 +114,7 @@ msavin:mongol@1.6.2
 netanelgilad:excel@0.2.6
 npm-mongo@1.4.39_1
 observe-sequence@1.0.7
+okgrow:analytics@1.0.4
 ordered-dict@1.0.4
 promise@0.5.1
 raix:eventemitter@0.1.3

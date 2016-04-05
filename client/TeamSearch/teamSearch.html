@@ -14,7 +14,18 @@ In addition to overall OPR, we have also calculated OPR for individual tasks. Fo
 <br><br>
 Similarly, team 4997 has a high goal OPR of 9.93, which means that on average, it scores about 9.93 cubes in the high goal per match.
 <br><br>
-Note that due to the low amount of matches played in FTC, all of these numbers are subject to a large amount of noise. These numbers (especially the numbers given for hanging), are merely a rough guideline to a robot's capabilities.  
+Note that due to the low amount of matches played in FTC, all of these numbers are subject to a large amount of noise. These numbers (especially the numbers given for hanging), are merely a rough guideline to a robot's capabilities. 
+<br><br>
+<form id='region_selector'>
+  <b>Select a Region: </b>
+  <input type="radio" name="region" value="all" checked> All 
+    <input type="radio" name="region" value="worlds"> Worlds Teams
+    <input type="radio" name="region" value="west"> West 
+    <input type="radio" name="region" value="east"> East 
+     <input type="radio" name="region" value="north"> North  
+     <input type="radio" name="region" value="south"> South  
+     <input type="radio" name="region" value="none"> Other 
+  </form> 
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
@@ -30,11 +41,26 @@ Note that due to the low amount of matches played in FTC, all of these numbers a
         <th id="team_number" >
           Team #
         </th>
+        {{#if isWorlds}}
+          <th id='team_name'>Name</th>
+        {{/if}}
+        <th id='region'>
+          Region
+        </th>
         <th id='total_score' class='sortable'>
           Total Score
         </th>
+        <th id='auto' class='sortable'>
+          Auto
+        </th>
         <th id='hang' class='sortable'>
-          Hang Percentage
+          Hang
+        </th>
+        <th id='all_clear' class='sortable'>
+          All Clear
+        </th>
+        <th id='cubes_scored' class='sortable'>
+          Cubes Scored
         </th>
         <th id='high_goal' class='sortable'>
           High Goal

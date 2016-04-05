@@ -41,8 +41,17 @@
         <th id='total_score' class='sortable'>
           Total Score
         </th>
+        <th id='auto' class='sortable'>
+          Autonomous
+        </th>
         <th id='hang' class='sortable'>
-          Hang Percentage
+          Hang
+        </th>
+        <th id='all_clear' class='sortable'>
+          All Clear
+        </th>
+        <th id='cubes_scored' class='sortable'>
+          Cubes Scored
         </th>
         <th id='high_goal' class='sortable'>
           High Goal
@@ -63,7 +72,10 @@
         <td>{{teamNum}}</td>
         <!-- <td>{{ranking 'total_score' teamNum}} </td> -->
         <td>{{opr 'total_score' teamNum}}</td>
-        <td>{{opr 'hang' teamNum}}</td>
+        <td>{{opr 'auto' teamNum}}</td>
+        <td>{{opr 'hang' teamNum}}%</td>
+        <td>{{opr 'all_clear' teamNum}}%</td>
+        <td>{{opr 'cubes_scored' teamNum}}</td>
         <td>{{opr 'high_goal' teamNum}}</td>
         <td>{{opr 'mid_goal' teamNum}}</td>
         <td>{{opr 'low_goal' teamNum}}</td>
@@ -80,10 +92,10 @@
 
 <template name='pageResults'>
 Results per page: <a href='#' class='perPage' style='color: black'>10</a> | <a href='#' class='perPage'>25</a> | <a href='#' class='perPage'>50</a>
- <div class="switch" style="float: right">
+<!--  <div class="switch" style="float: right">
   <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">Include Penalties
   <label for="cmn-toggle-4"></label>
-  </div>
+  </div> -->
   
  <table class="table table-bordered table-striped">
   <thead>

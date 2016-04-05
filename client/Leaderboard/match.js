@@ -40,6 +40,15 @@ Template.Match.helpers({
         }
 
         return $(elem)[0].outerHTML;
+    },
+    matchNumber: function(){
+        if (this.match_type=='4'){
+            return 'F-'+this.match_number;
+        } else if(this.match_type=='3'){
+            return 'SF-'+this.match_number;
+        } else if(this.match_type=='1'){
+            return 'Q-'+this.match_number;
+        }
     }
 });
 
