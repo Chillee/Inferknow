@@ -1,10 +1,8 @@
 <template name='TeamInfo'>
-<tr>
-  <td>{{rank}}</td>
-  <td>{{team_number}}</td>
-  {{#if isWorlds}}
-    <td> {{team_name}}</td>
-  {{/if}}
+  <tr class={{getDivision}}>
+  <td><a href='#'><i class="fa fa-plus-circle"></i></a></td>
+  <td>{{{getTeamURL}}}</td>
+  <td>{{team_name}}</td>
   <td>{{region}}</td>
   <td>{{opr 'total_score' }}</td>
   <td>{{opr 'auto'}}</td>
@@ -15,5 +13,25 @@
   <td>{{opr 'mid_goal'}}</td>
   <td>{{opr 'low_goal'}}</td>
   <td>{{opr 'zipline'}} </td>
-</tr>
+  <td> {{opr 'parking_score'}}</td>
+  <!-- <td> {{opr 'penalties'}}</td> -->
+  </tr>
+  {{#if showGraphs}}
+    <tr>
+    <td colspan ='3'>The graphs show alliance scores, not individual robot score.</td>
+    <td> </td>
+    <td>{{> highchartsHelper chartId=(chartId 'total_score') chartWidth="100%" charHeight="100%" chartObject=(teamChart "total_score" 0 600)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'auto') chartWidth="100%" charHeight="100%" chartObject=(teamChart "auto" 0 100)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'hang') chartWidth="100%" charHeight="100%" chartObject=(teamChart "hang" 0 2)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'all_clear') chartWidth="100%" charHeight="100%" chartObject=(teamChart "all_clear" 0 2)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'cubes_scored') chartWidth="100%" charHeight="100%" chartObject=(teamChart "cubes_scored" 0 30)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'high_goal') chartWidth="100%" charHeight="100%" chartObject=(teamChart "high_goal" 0 15)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'mid_goal') chartWidth="100%" charHeight="100%" chartObject=(teamChart "mid_goal" 0 15)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'low_goal') chartWidth="100%" charHeight="100%" chartObject=(teamChart "low_goal" 0 30)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'zipline') chartWidth="100%" charHeight="100%" chartObject=(teamChart "zipline" 0 3)}}</td>
+    <td>{{> highchartsHelper chartId=(chartId 'parking_score') chartWidth="100%" charHeight="100%" chartObject=(teamChart "parking_score" 0 170)}}</td>
+    <!-- <td>{{> highchartsHelper chartId=(chartId 'penalties') chartWidth="100%" charHeight="100%" chartObject=(teamChart "penalties" 0 100)}}</td> -->
+    </tr>
+  {{/if}}
+  
 </template>

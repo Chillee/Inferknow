@@ -5,8 +5,27 @@
 .red_team {
     background-color: #fee;
 }
+.franklin{
+  background-color: #fcc !important;
+}
+.edison{
+  background-color: #ccf !important;
+}
 .sortable {
   cursor: pointer;
+}
+#teamTable{
+    counter-reset: rowNumber;
+}
+
+#teamTable .team:nth-child(n+1)  {
+    counter-increment: rowNumber;
+}
+
+#teamTable .team td:first-child::before {
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
 }
 /*.blue_team.won{
     background-color: #9999ff

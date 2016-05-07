@@ -1,6 +1,5 @@
 <template name="Leaderboard">
   <title> Inferknow </title>
-  <header> Inferknow: by Vulcan Robotics #8375 </header>
   {{>Header}}
 
 
@@ -28,62 +27,69 @@
   </form>
   {{#if isTeam}}
     <table class="table table-bordered table-striped">
+
     <thead>
       <tr>
-        <th colspan='3'></th>
-        <th colspan = '3'>Objects Scored</th>
-        <th colspan = '1'>Ziplines Triggered </th>
+        <th colspan='2'></th>
+        <th colspan='10'>
+          <select id='metric_selector'>
+          <option value='OPR'>OPR</option>
+          <option value='average'>Average</option>
+          </select>
+        </th>
       </tr>
       <tr>
-        <th id="team_number" >
+        <th id='rank'>
+          Rank
+        </th>
+        <th id="team_number" class='sortable' >
           Team #
         </th>
+        <th id='team_name'>Name</th>
+        <th id='region'>
+          Region
+        </th>
         <th id='total_score' class='sortable'>
-          Total Score
+          Total Score<i class="fa fa-sort"></i>
         </th>
         <th id='auto' class='sortable'>
-          Autonomous
+          Auto<i class="fa fa-sort"></i>
         </th>
         <th id='hang' class='sortable'>
-          Hang
+          Hang<i class="fa fa-sort"></i>
         </th>
         <th id='all_clear' class='sortable'>
-          All Clear
+          All Clear<i class="fa fa-sort"></i>
         </th>
         <th id='cubes_scored' class='sortable'>
-          Cubes Scored
+          Debris Scored<i class="fa fa-sort"></i>
         </th>
         <th id='high_goal' class='sortable'>
-          High Goal
+          High Goal<i class="fa fa-sort"></i>
         </th>
         <th id='mid_goal' class='sortable'>
-          Mid Goal
+          Mid Goal<i class="fa fa-sort"></i>
         </th>
         <th id='low_goal' class='sortable'>
-          Low Goal
+          Low Goal<i class="fa fa-sort"></i>
         </th>
         <th id='zipline' class='sortable'>
-          Ziplines
+          Ziplines<i class="fa fa-sort"></i>
+        </th>
+        <th id='parking_score' class='sortable'>
+          Parking Score<i class="fa fa-sort"></i>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>{{teamNum}}</td>
-        <!-- <td>{{ranking 'total_score' teamNum}} </td> -->
-        <td>{{opr 'total_score' teamNum}}</td>
-        <td>{{opr 'auto' teamNum}}</td>
-        <td>{{opr 'hang' teamNum}}%</td>
-        <td>{{opr 'all_clear' teamNum}}%</td>
-        <td>{{opr 'cubes_scored' teamNum}}</td>
-        <td>{{opr 'high_goal' teamNum}}</td>
-        <td>{{opr 'mid_goal' teamNum}}</td>
-        <td>{{opr 'low_goal' teamNum}}</td>
-        <td>{{opr 'zipline' teamNum}} </td>
-      </tr>
+    {{#with getTeam}}
+      {{> TeamInfo}}
+    {{/with}}
     </tbody>
   </table>
+  Share this team's stats at {{{getTeamURL}}}
   {{/if}}
+
   
 
     {{> pagesNav}}

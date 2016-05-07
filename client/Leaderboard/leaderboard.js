@@ -2,13 +2,22 @@ Template.Leaderboard.helpers({
     isTeam: function(){
         return Session.get('filter_type')=='team';
     },
-    teamNum: function(){
-        return Session.get('filter_val');
+    getTeamURL: function(){
+        return "<a href='http://www.inferknow.org/teams/"+Session.get('filter_val')+"'> www.inferknow.org/teams/"+Session.get('filter_val')+"</a>";
+    },
+    getTeam: function(){
+        Meteor.call('getTeam', Session.get('filter_val'), function(err, result){
+            if (result){
+                // console.log(result);
+                Session.set('temp_team', result);
+            }
+        });
+        return Session.get('temp_team');
     },
     opr: function(field, team_number){
         Meteor.call('getTeam', team_number, function(err, result){
             if (result){
-                console.log(result);
+                // console.log(result);
                 var res = result.OPR[field+'_max'];
                 if (res > 1 && (field=='hang' || field=='all_clear')){
                     res = 1;
@@ -26,7 +35,6 @@ Template.Leaderboard.helpers({
     ranking: function(field, team_number){
         Meteor.call('getRanking', team_number, field, function(err, result){
             if (result){
-                console.log(result);
                 Session.set('team_ranking', result);
             }
         });
@@ -36,8 +44,9 @@ Template.Leaderboard.helpers({
 });
 
 Template.Leaderboard.events({
-    'change .onoffswitch': function(event){
-        // if ($(event.target))
+    'change #metric_selector': function(event){
+        Session.set('metric_type', $(event.target).val());
+        analytics.page('Leaderboard');
     },
     'click .sortable_heading a': function(event){
         var sort_order = {};
@@ -46,6 +55,7 @@ Template.Leaderboard.events({
         Pages.set({
             sort: sort_order
         });
+        analytics.page('Leaderboard');
     },
     'click .filterable a': function(event){
         var filter_object = {}
@@ -69,6 +79,8 @@ Template.Leaderboard.events({
             filters: filter_object
         });
         Session.set('filter_object', filter_object);
+        analytics.page('Leaderboard');
+
     },
     'click #reset_filters': function(){
         Pages.set({
@@ -79,6 +91,8 @@ Template.Leaderboard.events({
         Session.set("filter_object", {});
         $('#search').val('');
         $('#cur_filter').text('');
+        analytics.page('Leaderboard');
+
     },
     'change #search': function(event){
         var res = $(event.target).val();
@@ -94,6 +108,8 @@ Template.Leaderboard.events({
                 filters: filter_object
             });
         }
+        analytics.page('Leaderboard');
+
     },
     'change #region_selector': function(event){
         // console.log(event.target.val()) q;
@@ -154,14 +170,29 @@ Template.Leaderboard.events({
         Pages.set({
             filters: filter_obj
         });
+        analytics.page('Leaderboard');
+
     },
     'click .perPage': function(event){
         Pages.set({perPage: parseInt($(event.target).text())});
         $('.perPage').css('color', '#337ab7');
         $(event.target).css('color', 'black');
+        analytics.page('Leaderboard');
         
     }
 });
 
 
+Template.Leaderboard.onRendered(function(){
+    Session.set('metric_type', 'OPR');
+    if (Session.get('filter_type')=='team'){
+        var team = Session.get('filter_val');
+        var filter_object = {};
+        filter_object['$or'] = [{'red_1': team}, {'red_2': team}, {'red_3': team}, {'blue_1': team}, {'blue_2': team}, {'blue_3': team}];
+        Pages.set({
+                    filters: filter_object
+                });
+    }
+
+});
 
